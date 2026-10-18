@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS-OPS // Autonomous Agentic AI Workflow Engine</title>
+  <meta name="description" content="Autonomous multi-agent AI system that plans, reasons, collaborates, and executes complex enterprise workflows across fragmented ERP, logistics, and banking silos.">
+  
+  <!-- Modern Typography: Outfit, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Design System -->
+  <link rel="stylesheet" href="/src/styles/design-tokens.css">
+  <link rel="stylesheet" href="/src/styles/components.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       Navigation & System Header
+       ========================================================================= -->
+  <nav class="navbar" id="appNavbar">
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div class="brand-text">
+        <h1>NEXUS-OPS</h1>
+        <span class="brand-tag">Autonomous Multi-Agent AI Swarm</span>
+      </div>
+    </div>
+
+    <div class="nav-center">
+      <div class="status-indicator" id="swarmStatusIndicator">
+        <span class="status-dot" id="swarmStatusDot"></span>
+        <span id="swarmStatusText">Swarm Idle</span>
+      </div>
+      <div class="status-indicator" style="cursor: pointer;" id="btnOpenLlmModal" title="Click to configure AI LLM">
+        <span style="font-size: 0.9rem;">🤖</span>
+        <span id="llmEngineBadge" style="font-family: var(--font-mono); color: var(--accent-cyan);">Gemini 2.5 Flash</span>
+      </div>
+      <div class="status-indicator" style="cursor: pointer;" id="btnOpenSupabaseModal" title="Click to inspect Supabase Database connection">
+        <span style="font-size: 0.9rem;">⚡</span>
+        <span id="supabaseStatusBadge" style="font-family: var(--font-mono); color: var(--accent-emerald);">Supabase DB</span>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <button class="btn btn-secondary btn-sm" id="btnOpenSilos" title="Inspect fragmented enterprise databases">
+        <span>🗄️</span> Enterprise Silos
+      </button>
+      <button class="btn btn-secondary btn-sm" id="btnOpenCustomCase" title="Submit a custom enterprise problem">
+        <span>➕</span> Custom Case
+      </button>
+      <button class="btn btn-primary" id="btnRunActiveCase">
+        <span>▶</span> Execute Swarm
+      </button>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       ROI & Performance Metrics Ribbon
+       ========================================================================= -->
+  <section class="metrics-strip" id="metricsStrip">
+    <div class="metric-card">
+      <div class="metric-icon" style="color: var(--accent-cyan);">⏱️</div>
+      <div class="metric-data">
+        <div class="metric-value" id="metricTimeSaved">38 mins</div>
+        <div class="metric-label">Avg Human Time Saved</div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon" style="color: var(--accent-emerald);">💵</div>
+      <div class="metric-data">
+        <div class="metric-value" id="metricDiscrepancy">$11,600</div>
+        <div class="metric-label">Target Exposure Resolved</div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon" style="color: var(--accent-violet);">🛡️</div>
+      <div class="metric-data">
+        <div class="metric-value" id="metricCompliance">100%</div>
+        <div class="metric-label">Policy Guardrail Verification</div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon" style="color: var(--accent-amber);">⚡</div>
+      <div class="metric-data">
+        <div class="metric-value" id="metricTasksExecuted">0 / 7</div>
+        <div class="metric-label">Autonomous Tool Actions</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       Main Multi-Agent Orchestrator Workspace
+       ========================================================================= -->
+  <main class="orchestrator-layout">
+
+    <!-- Column 1: Enterprise Cases & Silo Ingestion Context -->
+    <aside class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>📁</span>
+          <span>Exception Queue</span>
+          <span class="badge" id="caseCountBadge">3 Active</span>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="btnRefreshCases" title="Reload cases">↻</button>
+      </div>
+
+      <div class="panel-body" id="caseListContainer">
+        <!-- Dynamically rendered case cards -->
+      </div>
+
+      <!-- Quick Fragmented Silos Preview -->
+      <div style="padding: 0 1.25rem 1.25rem 1.25rem;">
+        <div class="silos-preview">
+          <div class="silos-header">
+            <span>Fragmented Silos Integrated</span>
+            <span style="color: var(--accent-emerald); font-weight: 700;">● Live</span>
+          </div>
+          <div class="silo-chips">
+            <span class="silo-chip"><span>🏢</span> SAP NetSuite ERP</span>
+            <span class="silo-chip"><span>🚚</span> DHL Freight Telemetry</span>
+            <span class="silo-chip"><span>💳</span> Stripe & SWIFT Ledger</span>
+            <span class="silo-chip"><span>📜</span> Enterprise DoA Rules</span>
+            <span class="silo-chip"><span>🎫</span> Zendesk Support API</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Column 2: Adaptive Execution DAG & Cognitive Reasoning Feed -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>🧠</span>
+          <span>Autonomous Deliberation & DAG</span>
+          <span class="badge" id="dagProgressBadge">Standby</span>
+        </div>
+        <div style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);" id="execTimer">
+          0.0s
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <!-- Interactive DAG View -->
+        <div class="dag-container">
+          <div class="dag-header">
+            <span>Adaptive Execution Plan (Directed Acyclic Graph)</span>
+            <span id="dagActiveNodeCounter">7 Steps</span>
+          </div>
+          <div class="dag-flow" id="dagFlowContainer">
+            <!-- Dynamically populated DAG nodes -->
+          </div>
+        </div>
+
+        <!-- Real-Time Cognitive Reasoning Terminal -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+          <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.05em; font-weight: 600;">
+            Cognitive Reasoning & Tool Calling Stream
+          </span>
+          <span style="font-size: 0.7rem; color: var(--accent-cyan); font-family: var(--font-mono);">
+            ● Streaming Thought Traces
+          </span>
+        </div>
+
+        <div class="reasoning-terminal" id="reasoningTerminal">
+          <div style="color: var(--text-muted); font-size: 0.78rem; padding: 1rem 0; text-align: center;">
+            Select a case and click "Execute Swarm" to initiate autonomous planning, multi-silo tool calls, and peer reasoning.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Column 3: Multi-Agent Collaboration Arena & Settlement Dossier -->
+    <section class="panel swarm-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>🤖</span>
+          <span>Agent Swarm Collaboration Arena</span>
+          <span class="badge" style="background: rgba(139, 92, 246, 0.2); color: var(--accent-violet);">
+            6 Agents Online
+          </span>
+        </div>
+        <div style="display: flex; gap: 0.4rem;">
+          <span class="status-dot active" title="Mesh Protocol Active"></span>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <!-- Swarm Chat Feed -->
+        <div class="swarm-chat" id="swarmChatContainer">
+          <div style="color: var(--text-muted); font-size: 0.78rem; padding: 1rem 0; text-align: center;">
+            Swarm communication channels idle. Ready to deliberate on cross-system discrepancies.
+          </div>
+        </div>
+
+        <!-- Final Settlement Dossier / Reconciled Ledger -->
+        <div id="settlementSection" style="display: none;">
+          <!-- Dynamically populated when execution completes -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       Human-In-The-Loop (HITL) Guardrail Authorization Modal
+       ========================================================================= -->
+  <div class="modal-overlay" id="hitlModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>🛡️ Human-In-The-Loop Authorization Required</h3>
+        <button class="modal-close" id="btnCloseHitl">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="hitl-alert-box">
+          <div class="hitl-alert-title">
+            <span>🚨</span>
+            <span id="hitlRoleRequired">VP_OF_FINANCE Signoff Required</span>
+          </div>
+          <p style="font-size: 0.85rem; color: #fecdd3;" id="hitlSummaryText">
+            The autonomous swarm paused execution because an enterprise safety threshold was triggered.
+          </p>
+          <ul class="hitl-reasons" id="hitlReasonsList">
+            <!-- Reasons injected -->
+          </ul>
+        </div>
+
+        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.5rem;">
+            <span style="color: var(--text-secondary);">Target Case:</span>
+            <strong style="color: #fff;" id="hitlCaseId">-</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.5rem;">
+            <span style="color: var(--text-secondary);">Proposed Financial Impact:</span>
+            <strong style="color: var(--accent-emerald);" id="hitlProposedAmount">$0.00</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem;">
+            <span style="color: var(--text-secondary);">Composite Threat / Risk Score:</span>
+            <strong style="color: var(--accent-rose);" id="hitlRiskScore">0.00</strong>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="hitlReviewerName">Executive Reviewer Name / Title</label>
+          <input type="text" id="hitlReviewerName" class="form-control" value="Marcus Chen, VP of Finance & Procurement" placeholder="Your name and title">
+        </div>
+
+        <div class="form-group">
+          <label for="hitlDecisionNote">Executive Audit Directive / Justification Note</label>
+          <textarea id="hitlDecisionNote" class="form-control" placeholder="Enter reason or instructions for the agent swarm..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" id="btnHitlEscalate">
+          <span>🔍</span> Escalate to Forensic Committee
+        </button>
+        <button class="btn btn-danger btn-sm" id="btnHitlReject">
+          <span>⛔</span> Reject & Quarantine
+        </button>
+        <button class="btn btn-primary btn-sm" id="btnHitlApprove">
+          <span>✅</span> Authorize Ledger Settlement
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       Fragmented Enterprise Silos Inspector Modal
+       ========================================================================= -->
+  <div class="modal-overlay" id="silosModal">
+    <div class="modal" style="max-width: 850px;">
+      <div class="modal-header">
+        <h3>🗄️ Enterprise Data Silos (Fragmented Systems Explorer)</h3>
+        <button class="modal-close" id="btnCloseSilos">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.82rem; color: var(--text-secondary);">
+          Inspect live simulated records across ERP (SAP), Freight Telemetry (DHL), Banking (Stripe/SWIFT), and Policy rules before and after agent reconciliation.
+        </p>
+
+        <div class="silo-tabs">
+          <button class="silo-tab active" data-silo="erp">SAP NetSuite ERP</button>
+          <button class="silo-tab" data-silo="logistics">DHL Freight Telemetry</button>
+          <button class="silo-tab" data-silo="banking">Stripe & Global Banking</button>
+          <button class="silo-tab" data-silo="policy">Enterprise DoA Policies</button>
+          <button class="silo-tab" data-silo="crm">Zendesk Support Tickets</button>
+        </div>
+
+        <pre class="silo-viewer" id="siloJsonViewer">Loading enterprise silos...</pre>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" id="btnCloseSilosFooter">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       LLM Engine & API Configuration Modal
+       ========================================================================= -->
+  <div class="modal-overlay" id="llmModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>🤖 AI LLM Engine Configuration</h3>
+        <button class="modal-close" id="btnCloseLlm">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.82rem; color: var(--text-secondary);">
+          Configure live Google Gemini AI calls for dynamic agent planning and multi-agent reasoning, or utilize the autonomous cognitive simulation engine for instant zero-key testing.
+        </p>
+
+        <div class="form-group">
+          <label for="inputGeminiApiKey">Google Gemini API Key</label>
+          <input type="password" id="inputGeminiApiKey" class="form-control" placeholder="AIzaSy... (Leave empty to use autonomous simulation engine)">
+          <span style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem;">
+            Key is stored locally in your browser session and passed securely to the backend agent orchestrator.
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="selectLlmModel">LLM Model</label>
+          <select id="selectLlmModel" class="form-control">
+            <option value="gemini-2.5-flash" selected>Google Gemini 2.5 Flash (Ultra-fast, High Reasoning)</option>
+            <option value="gemini-1.5-flash">Google Gemini 1.5 Flash</option>
+            <option value="gemini-1.5-pro">Google Gemini 1.5 Pro</option>
+          </select>
+        </div>
+
+        <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid var(--accent-cyan-glow); padding: 0.85rem; border-radius: var(--radius-sm); font-size: 0.78rem; color: #bae6fd;">
+          💡 <strong>Out-Of-The-Box Ready:</strong> If no API key is provided, Nexus-Ops automatically runs the high-fidelity Cognitive Simulation Engine, executing identical multi-step reasoning, tool invocations, and DAG state transitions!
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" id="btnTestLlm">Test Connection</button>
+        <button class="btn btn-primary btn-sm" id="btnSaveLlm">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       Supabase Database Connectivity Modal
+       ========================================================================= -->
+  <div class="modal-overlay" id="supabaseModal">
+    <div class="modal" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3>⚡ Supabase Database Architecture</h3>
+        <button class="modal-close" id="btnCloseSupabase">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.82rem; color: var(--text-secondary);">
+          Nexus-Ops is engineered with dual-layer database connectivity: direct client subscriptions on the frontend and secure PostgreSQL persistence on the backend.
+        </p>
+
+        <div style="background: var(--bg-tertiary); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem;">
+            <span style="color: var(--text-secondary);">Backend Database Engine:</span>
+            <strong id="backendDbStatusText" style="color: var(--accent-emerald);">Checking...</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem;">
+            <span style="color: var(--text-secondary);">Frontend Client Realtime:</span>
+            <strong id="frontendDbStatusText" style="color: var(--accent-cyan);">Checking...</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+            <span style="color: var(--text-secondary);">Active Target URL:</span>
+            <span id="targetSupabaseUrl" style="font-family: var(--font-mono); color: #fff;">-</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.78rem; color: #a7f3d0; line-height: 1.5;">
+          <strong>📄 SQL Schema & Tables:</strong><br>
+          A ready-to-use migration script <code>supabase_schema.sql</code> is included in the project root. Paste it into your Supabase SQL editor to create:
+          <code>nexus_cases</code>, <code>nexus_settlement_memos</code>, <code>nexus_audit_logs</code>, and <code>nexus_enterprise_silos</code> with RLS policies!
+        </div>
+
+        <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid var(--accent-cyan-glow); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.78rem; color: #bae6fd; line-height: 1.5;">
+          <strong>🔑 Environment Variables:</strong><br>
+          Configured in <code>backend/.env</code> (<code>SUPABASE_URL</code>, <code>SUPABASE_ANON_KEY</code>, <code>SUPABASE_SERVICE_ROLE_KEY</code>) and <code>frontend/.env</code> (<code>VITE_SUPABASE_URL</code>, <code>VITE_SUPABASE_ANON_KEY</code>).
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" id="btnTestSupabase">Test Live Ping</button>
+        <button class="btn btn-primary btn-sm" id="btnCloseSupabaseFooter">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       Custom Enterprise Case Ingestion Modal
+       ========================================================================= -->
+  <div class="modal-overlay" id="customCaseModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>➕ Submit Custom Enterprise Workflow Problem</h3>
+        <button class="modal-close" id="btnCloseCustomCase">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.82rem; color: var(--text-secondary);">
+          Input any repetitive, fragmented business exception to let the autonomous multi-agent swarm plan, audit, and reconcile it.
+        </p>
+
+        <div class="form-group">
+          <label for="custTitle">Case Title</label>
+          <input type="text" id="custTitle" class="form-control" placeholder="e.g. Server Hardware Shortage & Delivery Discrepancy" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label for="custCategory">Workflow Category</label>
+            <input type="text" id="custCategory" class="form-control" value="Supply Chain & Procurement">
+          </div>
+          <div class="form-group">
+            <label for="custAmount">Claim Discrepancy ($ USD)</label>
+            <input type="number" id="custAmount" class="form-control" value="8500.00" step="100">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label for="custPo">SAP Purchase Order #</label>
+            <input type="text" id="custPo" class="form-control" value="PO-8902">
+          </div>
+          <div class="form-group">
+            <label for="custTracking">DHL Tracking #</label>
+            <input type="text" id="custTracking" class="form-control" value="TRK-9811204">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="custDesc">Raw Exception Communication (Email / Ticket Body)</label>
+          <textarea id="custDesc" class="form-control" placeholder="Paste incoming invoice email or ticket dispute details..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" id="btnCancelCustomCase">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="btnSubmitCustomCase">Add to Swarm Queue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript App Entrypoint -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
