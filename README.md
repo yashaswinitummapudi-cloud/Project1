@@ -167,11 +167,24 @@ Nexus-Ops uses **Supabase** for enterprise data persistence, audit trails, and l
   VITE_APP_ENV=development
   ```
 
-### Database Schema Setup (1-Click SQL)
-Run the bundled `supabase_schema.sql` in your **Supabase Dashboard $\rightarrow$ SQL Editor**:
-* Creates `nexus_cases`, `nexus_settlement_memos`, `nexus_audit_logs`, and `nexus_enterprise_silos`.
-* Configures Row Level Security (RLS) policies for secure reads/writes.
-* Pre-seeds initial real-world test cases.
+### Migration File & Single Command Setup
+1. **Migration File**:
+   * Location: [`supabase/migrations/20261018000001_init_nexus_ops.sql`](file:///c:/Users/yasha/Desktop/Project1/supabase/migrations/20261018000001_init_nexus_ops.sql) (mirrored in [`supabase_schema.sql`](file:///c:/Users/yasha/Desktop/Project1/supabase_schema.sql)).
+   * Run with Supabase CLI: `npx supabase db push`
+   * Or copy & run in **Supabase Dashboard $\rightarrow$ SQL Editor**.
+
+2. **Single CLI Command for All Variables**:
+   ```bash
+   npm run supabase:vars
+   ```
+   * Displays all required variables for both `backend/.env` and `frontend/.env`.
+   * Add `--write` to automatically populate `.env` files: `npm run supabase:vars -- --write`.
+
+3. **Single SQL Command for All Variables (Inside Database)**:
+   ```sql
+   SELECT * FROM public.get_required_env_variables();
+   ```
+   * Returns a tabular directory of all required environment variables, their targets, and descriptions.
 
 ---
 

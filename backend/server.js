@@ -8,6 +8,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 import { enterpriseCases } from "./data/cases.js";
 import { mockEnterpriseDb } from "./data/enterpriseDb.js";
 import { agentSwarm } from "./agents/agentSwarm.js";
@@ -16,12 +19,21 @@ import { supabaseService } from "./services/supabaseService.js";
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendDistPath = path.join(__dirname, "../frontend/dist");
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Enable CORS and JSON parsing
 app.use(cors());
 app.use(express.json());
+
+// Serve static frontend build if generated (production / Render deployment)
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+}
 
 // In-memory active case lookup
 let caseRegistry = [...enterpriseCases];
@@ -244,6 +256,17 @@ app.post("/api/config/llm", (req, res) => {
     isConfigured: llmService.isConfigured(),
     model: llmService.modelName
   });
+});
+
+// SPA client-side routing fallback (for non-API GET routes in production)
+app.use((req, res, next) => {
+  if (req.method === "GET" && !req.path.startsWith("/api")) {
+    const indexHtml = path.join(frontendDistPath, "index.html");
+    if (fs.existsSync(indexHtml)) {
+      return res.sendFile(indexHtml);
+    }
+  }
+  next();
 });
 
 app.listen(PORT, () => {
